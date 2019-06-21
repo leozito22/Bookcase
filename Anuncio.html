@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CRUD de Anuncios</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/_css/mystyle.css">
+    <link rel="stylesheet" crossorigin="anonymous" href="/_css/main.css">
+
+<body onload="init()">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2795cc;">
+        <a class="navbar-brand" href="#">
+            <img src="/_imagens/bookcase menor.png" width="200" height="90" class="d-inline-block align-top" alt="">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/home.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Perfil</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/Anuncio.html">Anúncios<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Forum</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Contato</a>
+              </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </div>
+        
+    </nav>
+    <div id="msg" class="col-sm-6 offset-sm-3"></div>
+    <div class="container ">
+        <div id="opaco" onclick="voltar()"></div>
+        <div id="novoCad">
+            <div id="esquerda" class="col-sm-10">
+                <form id="form-anuncio">
+                    <div class="form-group row">
+                        <div class="col-sm-3">
+                            <label for="inputId">Id</label>
+                            <input type="text" class="form-control fieldId" id="inputId" placeholder="ID" disabled="">
+                        </div>
+                        <div class="col-sm-9">
+                            <label for="inputtitAn">Titulo (*)</label>
+                            <input type="text" class="form-control fieldtitAn" id="inputtitAn" required="" placeholder="Informe o titulo do anuncio">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label for="inputfotAn">Imagem (*)</label>
+                            <input type="text" class="form-control fieldfotAn" id="inputfotAn" required="" placeholder="Informe o endereço eletrônico da imagem">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label for="inputdescAn">Descrição (*)</label>
+                            <input type="text" class="form-control fielddescAn" id="inputdescAn" required="" placeholder="Descrição">
+                        </div>
+                        
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label for="inputlocAn">Localização (*)</label>
+                            <input type="text" class="form-control fieldlocAn" id="inputlocAn" required="" placeholder="Informe seu cep">
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="inputcontAn">Contato (*)</label>
+                            <input type="text" class="form-control fieldcontAn" id="inputcontAn" required="" placeholder="Informe seu contato">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-4">
+                            <small>(*) Campos obrigatórios</small>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="direita" class="col-sm-2">
+                <div class="form-group row alinhaDireita">
+                    <label for="inputfotAn">
+                        <div id="fotAn" class="linha fieldImg">
+                            <img src="/_imagens/img0.jpg" alt="imagem_inicial">
+                        </div>
+                    </label>
+                </div>
+                <div class="form-group row alinhaDireita">
+                    <input type="button" class="btn btn-primary large" id="btnImg" value="Carrega Imagem">
+                </div>
+                <div class="form-group row alinhaDireita">
+                    <input type="button" class="btn btn-success large" id="btnInsert" value="Salvar">
+                </div>
+                <div class="form-group row alinhaDireita">
+                    <input type="button" class="btn btn-danger large" id="btnCancelar" value="Cancelar">
+                </div>
+                <div class="form-group row alinhaDireita">
+                    <input type="button" class="btn btn-secondary large" id="btnClear" value="Limpar">
+                </div>
+            </div>
+        </div>
+        <div id="visualiza">
+            <div id="btnFechar">
+                <input type="button" class="btn btn-danger small fechar" value="✖" title="Fechar" onclick="voltar()">
+            </div>
+            <div id="esquerdaV" class="col-sm-10">
+                <form id="form-anuncioV">
+                    <div class="form-group row">
+                        <div class="col-sm-3">
+                            <label for="inputIdV">Id</label>
+                            <input type="text" class="form-control fieldId" id="inputIdV" disabled="">
+                        </div>
+                        <div class="col-sm-9">
+                            <label for="inputtitAnV">Titulo</label>
+                            <input type="text" class="form-control fieldtitAn" id="inputtitAnV" required="" disabled="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label for="inputfotAn">Foto</label>
+                            <input type="text" class="form-control fieldfotAn" id="input" required="" disabled="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label for="inputdescAnV">Descrição</label>
+                            <input type="text" class="form-control fielddescAn" id="inputdescAnV" required="" disabled="">
+                        </div>
+                        
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label for="inputlocAnV">Localização</label>
+                            <input type="text" class="form-control fieldlocAn" id="inputlocAnV" required="" disabled="">
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="inputcontAnV">Contato</label>
+                            <input type="text" class="form-control fieldcontAn" id="inputcontAnV" required="" disabled="">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="direitaV" class="col-sm-2">
+                <div class="form-group row alinhaDireita">
+                    <div id="fotoAnV" class="linha fieldImg">
+                        <img src="/_imagens/img0.jpg" alt="imagem_inicial">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="grid-anuncio" class="table table-striped">
+                    <br>
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="button" class="btn btn-success small duplo" id="btnAdd" value="Novo" onclick="novo(1)">
+                            </th>
+                            <th scope="col">Titulo</th>
+                            <th scope="col">Descrição</th>
+                            <th scope="col">Contato</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-anuncio">
+                        <tr>
+                            <td><input type="button" class="btn btn-warning small edit" value="✎" title="Editar" onclick="editar(1)">
+                                &nbsp;<input type="button" class="btn btn-danger small delete" value="✖" title="Excluir"
+                                    onclick="deleta(1)"></td>
+                            <td onclick="visualizar(1)"></td>
+                            <td onclick="visualizar(1)"></td>
+                            <td onclick="visualizar(1)"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" class="btn btn-warning small edit" value="✎" title="Editar" onclick="editar(2)">
+                                &nbsp;<input type="button" class="btn btn-danger small delete" value="✖" title="Excluir"
+                                    onclick="deleta(2)"></td>
+                            <td onclick="visualizar(2)"></td>
+                            <td onclick="visualizar(2)"></td>
+                            <td onclick="visualizar(2)"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" class="btn btn-warning small edit" value="✎" title="Editar" onclick="editar(3)">
+                                &nbsp;<input type="button" class="btn btn-danger small delete" value="✖" title="Excluir"
+                                    onclick="deleta(3)"></td>
+                            <td onclick="visualizar(3)"></td>
+                            <td onclick="visualizar(3)"></td>
+                            <td onclick="visualizar(3)"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" class="btn btn-warning small edit" value="✎" title="Editar" onclick="editar(4)">
+                                &nbsp;<input type="button" class="btn btn-danger small delete" value="✖" title="Excluir"
+                                    onclick="deleta(4)"></td>
+                            <td onclick="visualizar(4)"></td>
+                            <td onclick="visualizar(4)"></td>
+                            <td onclick="visualizar(4)"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" class="btn btn-warning small edit" value="✎" title="Editar" onclick="editar(5)">
+                                &nbsp;<input type="button" class="btn btn-danger small delete" value="✖" title="Excluir"
+                                    onclick="deleta(5)"></td>
+                            <td onclick="visualizar(5)"></td>
+                            <td onclick="visualizar(5)"></td>
+                            <td onclick="visualizar(5)"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <footer>
+        &copy; Copyright 2019 BookCase
+    </footer>
+
+    
+    <script src="/_script/myfakedb.js"></script>
+    <script src="/_script/myscript.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+
+
+
+</body></html>

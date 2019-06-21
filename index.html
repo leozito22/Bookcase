@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/_css/style.css">
+    <link rel="stylesheet" href="/_css/style_lanc.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="msg" class="col-sm-6 offset-sm-3">
+    </div>
+    <header>
+        <div id="logo">
+            <img src="/_imagens/bookcase menor.png">
+        </div>
+        
+    </header>
+    <section id="inicio">
+        <div id="login">
+            Já é cadastrado? Acesse sua conta!
+            <br>
+            <br>
+            <br>
+            <div class="row"></div>
+            <form id="form-login">
+                <label for="inputUser">Usuário: *</label>
+                <br>
+                <input type="text" id="inputUser" class="form-control" required>
+                <br>
+                <label for="inputPassword">Senha: *</label>
+                <br>
+                <input type="password" id="inputPassword" class="form-control" required>
+                <span class="link" onclick="recuperar()">Esqueci meu usuário/senha</span>
+                <br>
+                <br>
+                <input type="button" class="btn btn-success col-sm-12" id="btnlogar" onclick="acessar()" value="Acessar">
+                <br>
+                <br>
+                <br> Ainda não possui cadastro?
+                <br>
+                <span class="link" onclick="registrar()">Clique aqui</span> e cadastre-se, é rápido e fácil!
+            </form>
+        </div>
+        <div id="config" class="invisible">
+            Identificamos ser seu primeiro acesso.
+            <br>
+            <br>Para iniciar, precisamos cadastrar seu saldo inicial: ele será o marco inicial da sua base de dados.
+            <br>
+            <br>
+            <br>
+            <div class="row"></div>
+            <form id="form-config">
+                <label for="inputSaldo">Saldo: *</label>
+                <br>  
+                <input type="number" id="inputSaldo" step="0.01" class="form-control" required placeholder="R$ 0,00">
+                <br>
+                <label for="inputDataSaldo">Data: *</label>
+                <br>
+                <input type="date" id="inputDataSaldo" class="form-control" required>
+                <br>
+                <br>
+                <input type="button" class="btn btn-success col-sm-12" id="btnContinuar" onclick="continuar()"
+                    value="Continuar">
+            </form>
+        </div>
+        <div id="esqueci" class="invisible">
+            Preencha os campos abaixo para recupesar seus dados de acesso
+            <br>
+            <br>
+            <div class="row"></div>
+            <form id="form-recupera">
+                <label for="inputLembraNome">Nome: *</label>
+                <br>
+                <input type="text" id="inputLembraNome" class="form-control" required>
+                <br>
+                <label for="inputLembraSobrenome">Sobrenome: *</label>
+                <br>
+                <input type="text" id="inputLembraSobrenome" class="form-control" required>
+                <br>
+                <label for="inputLembraEmail">E-mail: *</label>
+                <br>
+                <input type="email" id="inputLembraEmail" class="form-control" required>
+                <br>
+                <br>
+                <div id="flex">
+                    <input type="button" class="btn btn-danger col-sm-5" id="btnCancelar2" onclick="cancelar('esqueci')"
+                        value="Cancelar">
+                    <input type="button" class="btn btn-success col-sm-5" id="btnRecuperar" onclick="recuperaDados()"
+                        value="Prosseguir">
+                </div>
+            </form>
+        </div>
+        <div id="cadastro" class="invisible">
+            Preencha os campos abaixo para efetuar seu cadastro
+            <br>
+            <br>
+            <div class="row"></div>
+            <form id="form-cadastro">
+                <label for="inputName">Nome: *</label>
+                <br>
+                <input type="text" id="inputName" class="form-control" required>
+                <br>
+                <label for="inputLastName">Sobrenome: *</label>
+                <br>
+                <input type="text" id="inputLastName" class="form-control" required>
+                <br>
+                <label for="inputEmail">E-mail: *</label>
+                <br>
+                <input type="email" id="inputEmail" class="form-control" required>
+                <br>
+                <label for="inputUserCad">Usuário: *</label>
+                <br>
+                <input type="text" id="inputUserCad" class="form-control" required>
+                <br>
+                <label for="inputPasswordCad">Senha: *</label>
+                <br>
+                <input type="password" id="inputPasswordCad" class="form-control" required>
+                <br>
+                <br>
+                <div id="flex">
+                    <input type="button" class="btn btn-danger col-sm-5" id="btnCancelar" onclick="cancelar('cadastro')"
+                        value="Cancelar">
+                    <input type="button" class="btn btn-success col-sm-5" id="btnCadastrar" onclick="cadastrar()"
+                        value="Cadastrar">
+                </div>
+            </form>
+        </div>
+    </section>
+    
+    <footer>
+        <div id="footer">
+           <b> &copy; Copyright 2019 BookCase <b>
+        </div>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="/_script/database.js"></script>
+    <script src="/_script/script.js"></script>
+</body>
+
+</html>
