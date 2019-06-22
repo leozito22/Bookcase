@@ -72,6 +72,7 @@ function cadastrar() {
         return;
     }
     // Obtem os valores dos campos do formulário
+    let campoId= dados.length+1;
     let campoNome = $("#inputName").val();
     let campoSobrenome = $("#inputLastName").val();
     let campoEmail = $("#inputEmail").val();
@@ -90,6 +91,7 @@ function cadastrar() {
     }
     // Prepara os dados para cadastro do usuário
     let newUser = {
+        "user_id": campoId,
         "nome": campoNome,
         "sobrenome": campoSobrenome,
         "email": campoEmail,
@@ -112,20 +114,26 @@ function acessar() {
         return;
     }
     // Obtem os valores dos campos do formulário
+    var usuario_logado = 0;
+    let loginOk = false;
     let campoNick = $('#inputUser').val();
     let campoSenha = $('#inputPassword').val();
     // Verifica se os dados estão corretos no banco de dados
     for (i = 0; i < dados.length; i++) {
         if (campoNick == dados[i].nickname && campoSenha == dados[i].senha) {
             displayMessage("<b>" + dados[i].nome + "</b>, seja bem vindo!");
+            usuario_logado = dados[i].user_id;
             $("#form-login")[0].reset();
-            usuarioAtivo = i;
-            let db = dados[usuarioAtivo].livros;
-                location.href="home.html";
-
-               
+           
+            loginOk = true;
+            break;
+           
             
         }   
+    }
+    if(loginOk){
+            localStorage.setItem('usuario_logado', usuario_logado);
+            location.href='home.html'
     }
     displayMessage("Usuário não encontrado ou senha incorreta.");
 }/*

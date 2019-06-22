@@ -4,86 +4,134 @@
 <html lang="pt-br">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Bem vindo</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="/_css/mystyle.css">
-    <link rel="stylesheet" crossorigin="anonymous" href="/_css/main.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Bem vindo</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="/_css/mystyle.css">
+  <link rel="stylesheet" crossorigin="anonymous" href="/_css/main.css">
+  <script src="/_script/database.js"></script>
+  <script>
+    usuario_logado = localStorage.getItem('usuario_logado');
+    if (!usuario_logado) {
+      location.href = 'index.html';
+    }
+    else {
+      usuario_logado = parseInt(usuario_logado);
+      alert('usuario: ' + usuario_logado)
+    }
+  </script>
 
-<body onload="user()">
-    <style>.card{background-color: transparent;vertical-align: center; }.exemplo{display: block;margin-left: auto; margin-right: auto;}</style>
-    
-    <!--====================================Menu====================================-->
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2795cc;">
-        <a class="navbar-brand" href="#">
-            <img src="/_imagens/bookcase menor.png" width="200" height="90" class="d-inline-block align-top" alt="">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/home.html">Home<span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Perfil</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/Anuncio.html">Anúncios</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Forum</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Contato</a>
-              </li>
-          </ul>
+<body onload="init()">
+  <style>
+    .card {
+      background-color: white;
+        margin: 0 auto; /* Added */
+        float: none; /* Added */
+        margin-bottom: 10px; /* Added */
+    }
+
+   
+  </style>
+
+  <!--====================================Menu====================================-->
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2795cc;">
+    <a class="navbar-brand" href="#">
+      <img src="/_imagens/bookcase menor.png" width="200" height="90" class="d-inline-block align-top" alt="">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/home.html">Home<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Perfil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Anuncio.html">Anúncios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Forum</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contato</a>
+        </li>
+      </ul>
+      <button class="btn btn-danger" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+  <h1>Seus anúncios: (exemplo de próxima funcionalidade)</h1>
+  <div class="container">
+    <div class="row">  
+        <div id="posts">
+        
         </div>
-    </nav>
-    <h1>Seus anúncios: (exemplo de próxima funcionalidade)</h1>
-   <div class="row">
-    <div class="col-md-3">
-        <input type="text" id="filtro" onkeyup="listaAnuncio()"> <button onclick="listaAnuncio()">Ok</button>
-    <div id="listaAnuncio">
 
     </div>
+  </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script>
-        let db = JSON.parse(localStorage.getItem('dados'));
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+      <script>
+        var dados = JSON.parse(localStorage.getItem('dados'));
+        if (!dados) {
+          dados = contas.usuarios;
+          localStorage.setItem('dados', JSON.stringify(dados));
+        };
+        function showPosts(posts) {
+          if (!posts) posts = dados.livros;
 
-        $('document').ready (listaAnuncio);
-
-        function listaAnuncio() {
-            let filtro = $('#filtro').val();
-            arrayNovo = db.data.filter (function (elem) { 
-                   return elem.nome.includes (filtro) }
-            );
-
-            let texto ='';
-            for (i=0; i<arrayNovo.length; i++) {
-                texto += `<div>Nome: ${arrayNovo[i].nome} <br> Categoria: ${arrayNovo[i].categoria} </div><hr>`
+          let texto = '';
+          for (i = 0; i < dados.length; i++) {
+            for (j = 0; j < dados[i].livros.length; j++) {
+              texto += `<div class="exemplo mx-auto"><div class="card">
+                      <img class="card-img-top" src="${dados[i].livros[j].fotAn}" alt="Card image cap">
+                        <div class="card-body"><h5 class="card-title">${dados[i].livros[j].titAn}</h5>
+                          Descrição:<p class="card-text"> ${dados[i].livros[j].descAn}</p> <br>
+                          | Contato: ${dados[i].livros[j].contAn}<br>
+                      </div></div></div>`;
             }
-            $('#listaAnuncio').html (texto);
+          }
+          document.getElementById('posts').innerHTML = texto;
         }
 
-    </script>
-    </div>
-    </div>
-    <footer>
-        &copy; Copyright 2019 BookCase
-    </footer>
+        function logout() {
+          usuario_logado = 0;
+          localStorage.setItem('usuario_logado', usuario_logado);
+          location.href = 'index.html'
+        }
 
-    <script src="/script.js"></script>
-    <script src="/database.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
+        function init() {
+
+          let livrosByUser = dados.filter(function (elem) {
+            return elem.usuario_id == usuario_logado
+          });
+
+          showPosts(livrosByUser);
+        }
+      </script>
+
+      <footer>
+        &copy; Copyright 2019 BookCase
+      </footer>
+
+      <script src="/_script/script.js"></script>
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
 
 
 
