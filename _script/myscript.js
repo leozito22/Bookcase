@@ -1,10 +1,10 @@
 var edicao = 0, obj;
 
 // Caso exista no Local Storage, recupera os dados salvos. Caso contrário, cria a partir do arquivo JSON
-var db = JSON.parse(localStorage.getItem('db'));
-if (!db) {
-    db = dbfake;
-    localStorage.setItem('db', JSON.stringify(db));
+var dados = JSON.parse(localStorage.getItem('dados'));
+if (!dados) {
+    dados = contas.usuarios;
+    localStorage.setItem('dados', JSON.stringify(dados));
 };
 
 // Abre janela para preenchimento de formulário de cadastro de app
@@ -87,13 +87,15 @@ function exibeAnuncio() {
     $("#table-anuncio").html("");
 
     // Popula a tabela com os registros do banco de dados
-    for (i = 0; i < db.data.length; i++) {
-        let anuncio = db.data[i];
+    for (i = 0; i < dados.length; i++) {
+        for (j = 0; j < dados[i].livros.length; j++) {
+        let livros = dados[i].livros[j];
         $("#table-anuncio").append(`<tr><td><input type="button" class="btn btn-warning small edit" value="&#9998" 
-        title="Editar" onclick="editar(${anuncio.id})"> &nbsp<input type="button" class="btn btn-danger small delete" 
-        value="&#10006" title="Excluir" onclick="deleta(${anuncio.id})"></td><td onclick="visualizar(${anuncio.id})">${anuncio.titAn}</td><td 
-        onclick="visualizar(${anuncio.id})">${anuncio.descAn}</td><td onclick="visualizar(${anuncio.id})">${anuncio.contAn}</td>
+        title="Editar" onclick="editar(${livros.id})"> &nbsp<input type="button" class="btn btn-danger small delete" 
+        value="&#10006" title="Excluir" onclick="deleta(${livros.id})"></td><td onclick="visualizar(${livros.id})">${livros.titAn}</td><td 
+        onclick="visualizar(${livros.id})">${livros.descAn}</td><td onclick="visualizar(${livros.id})">${livros.contAn}</td>
         </tr>`);
+        }
     }
 }
 
@@ -119,7 +121,7 @@ function insertAnuncio(anuncio) {
 
     // Calcula novo Id a partir do último código existente no array para novo cadastro. Se edição, retorna valor salvo
     if (edicao != 1) {
-        novoId = db.data[db.data.length - 1].id + 1;
+        novoId = dados.livros[livros.length - 1].id + 1;
     }
     else {
         novoId = idAtual;
@@ -128,25 +130,25 @@ function insertAnuncio(anuncio) {
     // Organiza os dados na forma do registro
     let novoAnuncio = {
         "id": novoId,
-        "fotAn": anuncio.fotAn,
-        "titAn": anuncio.titAn,
-        "descAn": anuncio.descAn,
-        "locAn": anuncio.locAn,
-        "contAn": anuncio.contAn
+        "fotAn": livros.fotAn,
+        "titAn": livros.titAn,
+        "descAn": livros.descAn,
+        "locAn": livros.locAn,
+        "contAn": livros.contAn
     };
 
     // Insere o novo objeto no array para novos cadastros, ou atualiza em caso de edição
     if (edicao != 1) {
-        db.data.push(novoAnuncio);
+        dados.livros.push(novoAnuncio);
         displayMessage("Anuncio inserido com sucesso!");
     }
     else {
-        db.data[novoId-1] = novoAnuncio;
+        dados.livros[novoId-1] = novoAnuncio;
         displayMessage("Anuncio atualizado com sucesso!");
     }
 
     // Atualiza os dados no Local Storage
-    localStorage.setItem('db', JSON.stringify(db));
+    localStorage.setItem('dados', JSON.stringify(dados));
 
     // Altera "edicao" para diferente de 1, considerando que a próxima tarefa seja novo cadastro
     edicao = 0;
@@ -234,8 +236,9 @@ function init() {
 }
 
 // Carrega os dados do Local Storage nos campos input para edição (i=0) ou visualização (i=1), conforme parâmetro i
+
 function carregaDados(id, i) {
-    obj = db.data[id-1];
+    obj = dados.livros[id-1];
         document.getElementsByClassName('fieldId')[i].value = obj.id;
         document.getElementsByClassName('fieldtitAn')[i].value = obj.titAn;
         document.getElementsByClassName('fieldfotAn')[i].value = obj.fotAn;
@@ -272,7 +275,7 @@ function deleta(id) {
     reordenaId();
 
     // Atualiza os dados no Local Storage
-    localStorage.setItem('db', JSON.stringify(db));
+    localStorage.setItem('dados', JSON.stringify(dados));
 
     // Reexibe os anuncio
     exibeAnuncio();
@@ -280,7 +283,7 @@ function deleta(id) {
 
 // Reordena os números ID dos anuncio cadastrados após a exclusão de um app
 function reordenaId() {
-    obj = db.data;
+    obj = dados.livros;
     for (i=0; i<obj.length; i++) {
         if (i != (obj[i].id+1)) {
             obj[i].id = i+1;
