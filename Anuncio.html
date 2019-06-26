@@ -241,14 +241,8 @@
             localStorage.setItem('usuario_logado', usuario_logado);
             location.href = 'index.html'
         }
-        function filtra () {
-            let query = document.getElementById('query').value;
-            let postsFiltered = dados.livros.filter (function (elem) {
-            return elem.titAn.includes (query);
-        });
-
-    showPosts(postsFiltered);
-}
+        
+        
         
     </script>
     

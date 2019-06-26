@@ -82,11 +82,12 @@ function check() {
 }*/
 
 // Executa a leitura dos dados armazenados e apresenta os anuncio cadastrados em forma de tabela
+
 function exibeAnuncio() {
 
     // Remove todas as linhas do corpo da tabela
     $("#table-anuncio").html("");
-
+    
     // Popula a tabela com os registros do banco de dados
     for (i = 0; i < dados.livros.length; i++) {
         let livros = dados.livros[i];
@@ -97,6 +98,24 @@ function exibeAnuncio() {
         </tr>`);
         }
     
+}
+function filtra () {
+    
+    let query = document.getElementById('query').value;
+    let postsFiltered = dados.livros.filter (function (elem) {
+    return elem.titAn.includes (query);
+});
+
+exibeAnuncio(postsFiltered);
+for (i = 0; i < postsFiltered.length; i++) {
+    let livros = postsFiltered[i];
+    $("#table-anuncio").append(`<tr><td><input type="button" class="btn btn-warning small edit" value="&#9998" 
+    title="Editar" onclick="editar(${livros.id})"> &nbsp<input type="button" class="btn btn-danger small delete" 
+    value="&#10006" title="Excluir" onclick="deleta(${livros.id})"></td><td onclick="visualizar(${livros.id})">${livros.titAn}</td><td 
+    onclick="visualizar(${livros.id})">${livros.descAn}</td><td onclick="visualizar(${livros.id})">${livros.contAn}</td>
+    </tr>`);
+    }
+        
 }
 
 // Exibe mensagem em um elemento de ID msg
