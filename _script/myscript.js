@@ -2,8 +2,9 @@ var edicao = 0, obj;
 
 // Caso exista no Local Storage, recupera os dados salvos. Caso contrário, cria a partir do arquivo JSON
 var dados = JSON.parse(localStorage.getItem('dados'));
+var usuario_logado= JSON.parse(localStorage.getItem('usuario_logado'));
 if (!dados) {
-    dados = contas.usuarios;
+    dados = contas;
     localStorage.setItem('dados', JSON.stringify(dados));
 };
 
@@ -87,16 +88,15 @@ function exibeAnuncio() {
     $("#table-anuncio").html("");
 
     // Popula a tabela com os registros do banco de dados
-    for (i = 0; i < dados.length; i++) {
-        for (j = 0; j < dados[i].livros.length; j++) {
-        let livros = dados[i].livros[j];
+    for (i = 0; i < dados.livros.length; i++) {
+        let livros = dados.livros[i];
         $("#table-anuncio").append(`<tr><td><input type="button" class="btn btn-warning small edit" value="&#9998" 
         title="Editar" onclick="editar(${livros.id})"> &nbsp<input type="button" class="btn btn-danger small delete" 
         value="&#10006" title="Excluir" onclick="deleta(${livros.id})"></td><td onclick="visualizar(${livros.id})">${livros.titAn}</td><td 
         onclick="visualizar(${livros.id})">${livros.descAn}</td><td onclick="visualizar(${livros.id})">${livros.contAn}</td>
         </tr>`);
         }
-    }
+    
 }
 
 // Exibe mensagem em um elemento de ID msg
@@ -121,7 +121,7 @@ function insertAnuncio(anuncio) {
 
     // Calcula novo Id a partir do último código existente no array para novo cadastro. Se edição, retorna valor salvo
     if (edicao != 1) {
-        novoId = dados.livros[livros.length - 1].id + 1;
+        novoId = (dados.livros.length)+1;
     }
     else {
         novoId = idAtual;
@@ -129,12 +129,13 @@ function insertAnuncio(anuncio) {
     
     // Organiza os dados na forma do registro
     let novoAnuncio = {
+        "user_id": usuario_logado,
         "id": novoId,
-        "fotAn": livros.fotAn,
-        "titAn": livros.titAn,
-        "descAn": livros.descAn,
-        "locAn": livros.locAn,
-        "contAn": livros.contAn
+        "fotAn": anuncio.fotAn,
+        "titAn": anuncio.titAn,
+        "descAn": anuncio.descAn,
+        "locAn": anuncio.locAn,
+        "contAn": anuncio.contAn
     };
 
     // Insere o novo objeto no array para novos cadastros, ou atualiza em caso de edição
@@ -267,7 +268,7 @@ function editar(id) {
 
 // Detela um contato cadastrado no Local Storage a partir de seu ID (recebido como parâmetro)
 function deleta(id) {
-    db.data.splice(id-1, 1);
+    dados.livros.splice(id-1, 1);
 
     displayMessage("Anuncio removido com sucesso!");
     

@@ -11,6 +11,15 @@
     <link rel="stylesheet" href="/_css/mystyle.css">
     <link rel="stylesheet" crossorigin="anonymous" href="/_css/main.css">
 
+    <script>
+    usuario_logado = localStorage.getItem('usuario_logado');
+    if (!usuario_logado) {
+      location.href = 'index.html';
+    }
+    else {
+      usuario_logado = parseInt(usuario_logado);
+    }
+  </script>
 <body onload="init()">
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2795cc;">
         <a class="navbar-brand" href="#">
@@ -37,10 +46,12 @@
                 <a class="nav-link" href="#">Contato</a>
               </li>
           </ul>
+          
           <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+            <input id="query" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-success my-2 my-sm-0" type="submit" onclick="filtra()">Search</button>
           </form>
+          <button class="btn btn-danger" onclick="logout()">Logout</button>
         </div>
         
     </nav>
@@ -224,11 +235,28 @@
     <footer>
         &copy; Copyright 2019 BookCase
     </footer>
+    <script>
+        function logout() {
+            usuario_logado = 0;
+            localStorage.setItem('usuario_logado', usuario_logado);
+            location.href = 'index.html'
+        }
+        function filtra () {
+            let query = document.getElementById('query').value;
+            let postsFiltered = dados.livros.filter (function (elem) {
+            return elem.titAn.includes (query);
+        });
 
+    showPosts(postsFiltered);
+}
+        
+    </script>
+    
     
     <script src="/_script/database.js"></script>
     <script src="/_script/myscript.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script  src="https://code.jquery.com/jquery-3.4.1.js"  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="  crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     

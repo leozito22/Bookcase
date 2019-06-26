@@ -9,7 +9,7 @@ var indiceEdicao;
 // Caso exista no LocalStorage, recupera os dados salvos. Caso contrário, cria a partir do arquivo JSON
 var dados = JSON.parse(localStorage.getItem('dados'));
 if (!dados) {
-    dados = contas.usuarios;
+    dados = contas;
     localStorage.setItem('dados', JSON.stringify(dados));
 };
 
@@ -50,10 +50,10 @@ function recuperaDados() {
     let campoSobrenome = $("#inputLembraSobrenome").val();
     let campoEmail = $("#inputLembraEmail").val();
     // Verifica se o nome e e-mail do usuário já existem
-    for (i = 0; i < dados.length; i++) {
-        if (campoEmail == dados[i].email) {
-            if (campoNome == dados[i].nome && campoSobrenome == dados[i].sobrenome) {
-                displayMessage("Usuário: <b>" + dados[i].nickname + "</b> &nbsp &nbsp &nbsp &nbsp &nbsp Senha: <b>" + dados[i].senha + "</b>");
+    for (i = 0; i < dados.usuarios.length; i++) {
+        if (campoEmail == dados.usuarios[i].email) {
+            if (campoNome == dados.usuarios[i].nome && campoSobrenome == dados.usuarios[i].sobrenome) {
+                displayMessage("Usuário: <b>" + dados.usuarios[i].nickname + "</b> &nbsp &nbsp &nbsp &nbsp &nbsp Senha: <b>" + dados.usuarios[i].senha + "</b>");
                 return;
             }
             else {
@@ -72,19 +72,19 @@ function cadastrar() {
         return;
     }
     // Obtem os valores dos campos do formulário
-    let campoId= dados.length+1;
+    let campoId= dados.usuarios.length+1;
     let campoNome = $("#inputName").val();
     let campoSobrenome = $("#inputLastName").val();
     let campoEmail = $("#inputEmail").val();
     let campoNick = $('#inputUserCad').val();
     let campoSenha = $('#inputPasswordCad').val();
     // Verifica se o e-mail e nome de usuário já existem
-    for (i = 0; i < dados.length; i++) {
-        if (campoEmail == dados[i].email) {
+    for (i = 0; i < dados.usuarios.length; i++) {
+        if (campoEmail == dados.usuarios[i].email) {
             displayMessage("E-mail já cadastrado.");
             return;
         }
-        else if (campoNick == dados[i].nickname) {
+        else if (campoNick == dados.usuarios[i].nickname) {
             displayMessage("Nome de usuário indisponível.");
             return;
         }
@@ -97,9 +97,8 @@ function cadastrar() {
         "email": campoEmail,
         "nickname": campoNick,
         "senha": campoSenha,
-        "transacoes": [],
     };
-    dados.push(newUser);
+    dados.usuarios.push(newUser);
     displayMessage("Usuário cadastrado com sucesso!");
     // Atualiza os dados no Local Storage
     localStorage.setItem('dados', JSON.stringify(dados));
@@ -119,10 +118,10 @@ function acessar() {
     let campoNick = $('#inputUser').val();
     let campoSenha = $('#inputPassword').val();
     // Verifica se os dados estão corretos no banco de dados
-    for (i = 0; i < dados.length; i++) {
-        if (campoNick == dados[i].nickname && campoSenha == dados[i].senha) {
-            displayMessage("<b>" + dados[i].nome + "</b>, seja bem vindo!");
-            usuario_logado = dados[i].user_id;
+    for (i = 0; i < dados.usuarios.length; i++) {
+        if (campoNick == dados.usuarios[i].nickname && campoSenha == dados.usuarios[i].senha) {
+            displayMessage("<b>" + dados.usuarios[i].nome + "</b>, seja bem vindo!");
+            usuario_logado = dados.usuarios[i].user_id;
             $("#form-login")[0].reset();
            
             loginOk = true;
@@ -665,7 +664,7 @@ function reordenaId() {
 
 function excluir() {
     if (confirm("Deseja realmente excluir sua conta? Todos os seus dados serão apagados.")) {
-        dados.splice(usuarioAtivo, 1);
+        dados.livros.splice(usuarioAtivo, 1);
         logoff();
         displayMessage("Conta de usuário excluída com sucesso!");
         // Atualiza os dados no Local Storage

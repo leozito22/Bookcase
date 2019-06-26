@@ -81,23 +81,23 @@
       <script>
         var dados = JSON.parse(localStorage.getItem('dados'));
         if (!dados) {
-          dados = contas.usuarios;
+          dados = contas;
           localStorage.setItem('dados', JSON.stringify(dados));
         };
         function showPosts(posts) {
           if (!posts) posts = dados.livros;
 
           let texto = '';
-          for (i = 0; i < dados.length; i++) {
-            for (j = 0; j < dados[i].livros.length; j++) {
+
+            for (j = 0; j <dados.livros.length; j++) {
               texto += `<div class="exemplo mx-auto"><div class="card">
-                      <img class="card-img-top" src="${dados[i].livros[j].fotAn}" alt="Card image cap">
-                        <div class="card-body"><h5 class="card-title">${dados[i].livros[j].titAn}</h5>
-                          Descrição:<p class="card-text"> ${dados[i].livros[j].descAn}</p> <br>
-                          | Contato: ${dados[i].livros[j].contAn}<br>
+                      <img class="card-img-top" src="${dados.livros[j].fotAn}" alt="Card image cap">
+                        <div class="card-body"><h5 class="card-title">${dados.livros[j].titAn}</h5>
+                          Descrição:<p class="card-text"> ${dados.livros[j].descAn}</p> <br>
+                          | Contato: ${dados.livros[j].contAn}<br>
                       </div></div></div>`;
             }
-          }
+          
           document.getElementById('posts').innerHTML = texto;
         }
 
@@ -108,14 +108,15 @@
         }
 
         function init() {
-
-          let livrosByUser = dados.filter(function (elem) {
-            return elem.usuario_id == usuario_logado
+          
+          let livrosByUser = dados.livros.filter(function (elem) {
+            return elem.livros == usuario_logado
           });
 
           showPosts(livrosByUser);
         }
       </script>
+      
 
       <footer>
         &copy; Copyright 2019 BookCase
