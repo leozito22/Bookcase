@@ -13,7 +13,7 @@
 
     <script>
     usuario_logado = localStorage.getItem('usuario_logado');
-    if (!usuario_logado) {
+    if (usuario_logado==0) {
       location.href = 'index.html';
     }
     else {
@@ -33,24 +33,18 @@
             <li class="nav-item">
               <a class="nav-link" href="/home.html">Home</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Perfil</a>
-            </li>
             <li class="nav-item active">
               <a class="nav-link" href="/Anuncio.html">Anúncios<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Forum</a>
+                <a class="nav-link" href="http://bookcase.forumeiros.com/">Forum</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Contato</a>
               </li>
           </ul>
           
-          <form class="form-inline my-2 my-lg-0">
-            <input id="query" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-success my-2 my-sm-0" type="submit" onclick="filtra()">Search</button>
-          </form>
+          <input type="text" id="query"> <button onclick="filtra()">Filtra</button>
           <button class="btn btn-danger" onclick="logout()">Logout</button>
         </div>
         
@@ -243,6 +237,7 @@
         }
         
         
+
         
     </script>
     

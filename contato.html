@@ -66,13 +66,13 @@
       <button class="btn btn-danger" onclick="logout()">Logout</button>
     </div>
   </nav>
-  <h1>Seus anúncios: </h1>
-  <div class="container">
-    <div id="posts" class="row">  
-        
+  <h1>Contato: </h1>
+  <h4> Para sugestões, dúvidas, ou problemas:</h4>
+  <h4>contato@bookcase.com.br</h4>
 
-    </div>
-  </div>
+  <h4>Agora, se você só quer bater um papo conosco, venha para nosso fórum!</h4>
+  <h4>http://bookcase.forumeiros.com/</h4>
+  
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
       <script>
@@ -82,22 +82,7 @@
           localStorage.setItem('dados', JSON.stringify(dados));
         };
         
-        function showPosts(posts) {
-          if (!posts) posts = dados.livros;
-
-          let texto = '';
-
-            for (j = 0; j <posts.length; j++) {
-              texto += `<div class="col-4"><div class="card">
-                      <img class="card-img-top" src="${posts[j].fotAn}" alt="Card image cap">
-                        <div class="card-body"><h5 class="card-title">${posts[j].titAn}</h5>
-                          Descrição:<p class="card-text"> ${posts[j].descAn}</p> <br>
-                          | Contato: ${posts[j].contAn}<br>
-                      </div></div></div>`;
-            }
-          
-          document.getElementById('posts').innerHTML = texto;
-        }
+        
 
         function logout() {
           usuario_logado = 0;
